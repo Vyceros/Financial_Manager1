@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transactions</title>
+</head>
+<body>
+
+{% block content %}
+    <h1 class="title">{% block title %} Transactions {% endblock %}</h1>
+    <div class="content">
+        {% for transaction in transactions %}
+            <div class="student">
+                <p><b>#{{ transaction.id }}</b></p>
+                <b>
+                    <p class="name">{{ transaction.value }}</p>
+                </b>
+                <p>Transaction Type: {{ transaction.trans_type }}</p>
+                <p>Transaction Category: {{ transaction.trans_cat }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+</body>
+</html>
