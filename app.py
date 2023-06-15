@@ -59,7 +59,7 @@ def insert_transaction():
     db.session.add(new_transaction)
     db.session.commit()
 
-    transactions = [transi.to_dict() for transi in Transaction.query.all()]
+    transactions = [trans.to_dict() for trans in Transaction.query.all()]
     return render_template('index.html', transactions=transactions)
 
 
@@ -67,6 +67,31 @@ def insert_transaction():
 def show_transactions():
     transactions = [trans.to_dict() for trans in Transaction.query.all()]
     return render_template('database.html', transactions=transactions)
+
+
+@app.route('/edit/<int:transaction_id>', methods=['GET', 'POST'])
+def edit_transaction(transaction_id):
+    transaction = Transaction.query.get(transaction_id)
+    form = Form(obj=transaction)
+
+    if request.method == 'POST' and form.validate_on_submit():
+        transaction.value = form.value.data
+        transaction.trans_type = form.trans_type.data
+        transaction.trans_cat = form.trans_cat.data
+        db.session.commit()
+        return redirect(url_for('show_transactions'))
+
+    return render_template('edit.html', form=form, transaction=transaction)
+
+
+
+
+@app.route('/delete/<int:transaction_id>', methods=['POST'])
+def delete_transaction(transaction_id):
+    transaction = Transaction.query.get(transaction_id)
+    db.session.delete(transaction)
+    db.session.commit()
+    return redirect(url_for('show_transactions'))
 
 
 with app.app_context():

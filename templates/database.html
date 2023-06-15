@@ -45,13 +45,56 @@
         display: block;
         margin-bottom: 10px;
     }
+
+    .buttons button{
+        margin-top: 5px;
+        border: none;
+        border-radius: 2px;
+        height: 30px;
+    }
+
+    .buttons .delete {
+        background-color: red;
+        color: white;
+        width: 70px;
+    }
+
+    .buttons .edit {
+        background-color: darkgreen;
+        color: white;
+        width: 50px;
+    }
+
+    .buttons .delete:hover {
+        cursor: pointer;
+        background-color: darkred;
+        color: whitesmoke;
+        width: 70px;
+        transition: 0.2s;
+    }
+
+    .buttons .edit:hover {
+        cursor: pointer;
+        background-color: green;
+        color: whitesmoke;
+        width: 50px;
+        transition: 0.2s;
+    }
+    h1 {
+        cursor: pointer;
+    }
+
+    h1:hover {
+        color: #379e1f;
+        transition: 0.2s;
+    }
 </style>
 
 </head>
 <body>
 
 {% block content %}
-    <h1 class="title">{% block title %} Transactions {% endblock %}</h1>
+    <h1 onclick="location.href='/'" class="title">{% block title %} AghmartBank {% endblock %}</h1>
     <div class="content">
         {% for transaction in transactions %}
             <div class="transaction">
@@ -61,6 +104,12 @@
                 </b>
                 <p>Transaction Type: {{ transaction.trans_type }}</p>
                 <p>Transaction Category: {{ transaction.trans_cat }}</p>
+                <div class="buttons">
+                    <button onclick="location.href='{{ url_for('edit_transaction', transaction_id=transaction.id) }}'" class="edit">Edit</button>
+                    <form method="post" action="{{ url_for('delete_transaction', transaction_id=transaction.id) }}" style="display: inline;">
+                        <button type="submit" class="delete">Delete</button>
+                    </form>
+                </div>
             </div>
         {% endfor %}
     </div>
