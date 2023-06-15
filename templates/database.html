@@ -3,6 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Transactions</title>
+    <style>
+    @import url('https://fonts.googleapis.com/css?family=Lexend+Deca&display=swap');
+    body {
+        font-family: "Lexend Deca", sans-serif;
+    }
+
+    .title {
+        text-align: center;
+        color: #33837e;
+    }
+
+    .content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 20px;
+        justify-items: center;
+        margin-top: 20px;
+    }
+
+    .transaction {
+        background-color: #229c62;
+        color: white;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 300px;
+    }
+
+    .transaction p {
+        margin: 0;
+    }
+
+    .name {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .transaction b {
+        display: block;
+        margin-bottom: 10px;
+    }
+</style>
+
 </head>
 <body>
 
@@ -10,10 +54,10 @@
     <h1 class="title">{% block title %} Transactions {% endblock %}</h1>
     <div class="content">
         {% for transaction in transactions %}
-            <div class="student">
+            <div class="transaction">
                 <p><b>#{{ transaction.id }}</b></p>
                 <b>
-                    <p class="name">{{ transaction.value }}</p>
+                    <p class="name">{{ transaction.value }}ლ</p>
                 </b>
                 <p>Transaction Type: {{ transaction.trans_type }}</p>
                 <p>Transaction Category: {{ transaction.trans_cat }}</p>

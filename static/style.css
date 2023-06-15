@@ -16,6 +16,10 @@
  --dollar: #4b953b;
 }
 
+.container {
+    margin-top: 10px;
+}
+
 html {
  box-sizing: border-box;
  -webkit-font-smoothing: antialiased;
