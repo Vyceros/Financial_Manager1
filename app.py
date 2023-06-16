@@ -1,10 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, validators
-
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 
 app = Flask(__name__)
 
@@ -13,6 +11,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SECRET_KEY"] = 'supersecretkey'
 
 db = SQLAlchemy(app)
+ma = Marshmallow(app)
 
 
 class Transaction(db.Model):
@@ -30,6 +29,13 @@ class Transaction(db.Model):
         }
 
 
+class TransactionSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'value', 'trans_type', 'trans_cat')
+
+
+transaction_schema = TransactionSchema()
+transactions_schema = TransactionSchema(many=True)
 app.debug = True
 
 
@@ -111,5 +117,60 @@ def view_transaction(transaction_id):
     return render_template('transaction.html', transaction=transaction)
 
 
+@app.route('/api/transactions', methods=['GET'])
+def get_transactions():
+    transactions = Transaction.query.all()
+    result = transactions_schema.dump(transactions)
+    return jsonify(result)
+
+
+@app.route('/api/transactions/<int:transaction_id>', methods=['GET'])
+def get_transaction(transaction_id):
+    transaction = Transaction.query.get(transaction_id)
+    if transaction:
+        result = transaction_schema.dump(transaction)
+        return jsonify(result)
+    else:
+        return jsonify({'message': 'Transaction not found'}), 404
+
+
+@app.route('/api/transactions', methods=['POST'])
+def create_transaction():
+    value = request.json['value']
+    trans_type = request.json['trans_type']
+    trans_cat = request.json['trans_cat']
+    new_transaction = Transaction(value=value, trans_type=trans_type, trans_cat=trans_cat)
+    db.session.add(new_transaction)
+    db.session.commit()
+    result = transaction_schema.dump(new_transaction)
+    return jsonify(result), 201
+
+
+@app.route('/api/transactions/<int:transaction_id>', methods=['PUT'])
+def update_transaction(transaction_id):
+    transaction = Transaction.query.get(transaction_id)
+    if transaction:
+        transaction.value = request.json['value']
+        transaction.trans_type = request.json['trans_type']
+        transaction.trans_cat = request.json['trans_cat']
+        db.session.commit()
+        result = transaction_schema.dump(transaction)
+        return jsonify(result)
+    else:
+        return jsonify({'message': 'Transaction not found'}), 404
+
+
+@app.route('/api/transactions/<int:transaction_id>', methods=['DELETE'])
+def delete_transactions(transaction_id):
+    transaction = Transaction.query.get(transaction_id)
+    if transaction:
+        db.session.delete(transaction)
+        db.session.commit()
+        return jsonify({'message': 'Transaction deleted'})
+    else:
+        return jsonify({'message': 'Transaction not found'}), 404
+
+
 with app.app_context():
     db.create_all()
+    app.run()
