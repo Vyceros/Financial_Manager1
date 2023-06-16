@@ -97,6 +97,7 @@
     <h1 onclick="location.href='/'" class="title">{% block title %} AghmartBank {% endblock %}</h1>
     <div class="content">
         {% for transaction in transactions %}
+        <button onclick="location.href='/filter'" class="edit">Edit</button>
             <div class="transaction">
                 <p><b>#{{ transaction.id }}</b></p>
                 <b>

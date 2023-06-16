@@ -84,14 +84,25 @@ def edit_transaction(transaction_id):
     return render_template('edit.html', form=form, transaction=transaction)
 
 
-
-
 @app.route('/delete/<int:transaction_id>', methods=['POST'])
 def delete_transaction(transaction_id):
     transaction = Transaction.query.get(transaction_id)
     db.session.delete(transaction)
     db.session.commit()
     return redirect(url_for('show_transactions'))
+
+
+@app.route('/filter', methods=['POST', 'GET'])
+def filter_transactions():
+    form = Form()  # Create an instance of the Form
+    transactions = []
+
+    if request.method == 'POST' and form.validate_on_submit():
+        trans_type = form.trans_type.data
+        trans_cat = form.trans_cat.data
+        transactions = Transaction.query.filter_by(trans_type=trans_type, trans_cat=trans_cat).all()
+
+    return render_template('filter.html', form=form, transactions=transactions)
 
 
 with app.app_context():

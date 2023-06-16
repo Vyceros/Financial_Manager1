@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Filtered Transactions</title>
+</head>
+<body>
+    <h1>Filtered Transactions</h1>
+    <form method="post" action="{{ url_for('filter_transactions') }}">
+        {{ form.csrf_token }}
+        <div>
+            <label for="trans_type">Transaction Type:</label>
+            {{ form.trans_type(class_="form-control", id="trans_type") }}
+        </div>
+        <div>
+            <label for="trans_cat">Transaction Category:</label>
+            {{ form.trans_cat(class_="form-control", id="trans_cat") }}
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </form>
+
+    <table>
+    <tr>
+        <th>ID</th>
+        <th>Value</th>
+        <th>Type</th>
+        <th>Category</th>
+    </tr>
+    {% for transaction in transactions %}
+    <tr>
+        <td>{{ transaction.id }}</td>
+        <td>{{ transaction.value }}</td>
+        <td>{{ transaction.trans_type }}</td>
+        <td>{{ transaction.trans_cat }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
