@@ -113,4 +113,3 @@ def view_transaction(transaction_id):
 
 with app.app_context():
     db.create_all()
-    app.run()
