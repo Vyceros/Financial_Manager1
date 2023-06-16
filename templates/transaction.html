@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Transactions</title>
-    <style>
+    <title>Transaction Details</title>
+</head>
+<style>
     @import url('https://fonts.googleapis.com/css?family=Lexend+Deca&display=swap');
     body {
         font-family: "Lexend Deca", sans-serif;
@@ -59,39 +60,21 @@
         width: 70px;
     }
 
-    .buttons .edit {
+    button {
         background-color: darkgreen;
         color: white;
-        width: 50px;
+        width: 150px;
+        border: none;
+        border-radius: 7px;
+        height: 30px;
+        margin-left: 10px;
     }
 
-    .buttons .delete:hover {
-        cursor: pointer;
-        background-color: darkred;
-        color: whitesmoke;
-        width: 70px;
-        transition: 0.2s;
-    }
 
-    .buttons .edit:hover {
+    button:hover {
         cursor: pointer;
         background-color: green;
         color: whitesmoke;
-        width: 50px;
-        transition: 0.2s;
-    }
-
-    .view {
-        background-color: rgba(1, 7, 146, 0.93);
-        color: white;
-        width: 50px;
-    }
-
-    .view:hover {
-        cursor: pointer;
-        background-color: blue;
-        color: white;
-        width: 50px;
         transition: 0.2s;
     }
     h1 {
@@ -103,14 +86,8 @@
         transition: 0.2s;
     }
 </style>
-
-</head>
 <body>
-
-{% block content %}
-    <h1 onclick="location.href='/'" class="title">{% block title %} AghmartBank {% endblock %}</h1>
-    <div class="content">
-        {% for transaction in transactions %}
+    <h1>Transaction Details</h1>
     <div class="transaction">
         <p><b>#{{ transaction.id }}</b></p>
         <b>
@@ -118,16 +95,8 @@
         </b>
         <p>Transaction Type: {{ transaction.trans_type }}</p>
         <p>Transaction Category: {{ transaction.trans_cat }}</p>
-        <div class="buttons">
-            <button onclick="location.href='{{ url_for('edit_transaction', transaction_id=transaction.id) }}'" class="edit">Edit</button>
-            <form method="post" action="{{ url_for('delete_transaction', transaction_id=transaction.id) }}" style="display: inline;">
-                <button type="submit" class="delete">Delete</button>
-            </form>
-            <button onclick="location.href='{{ url_for('view_transaction', transaction_id=transaction.id) }}'" class="view">View</button>
-        </div>
     </div>
-{% endfor %}
-    </div>
-{% endblock %}
+    <button onclick="location.href='{{ url_for('show_transactions') }}'" class="back">Back to Transactions</button>
 </body>
+
 </html>

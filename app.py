@@ -105,6 +105,12 @@ def filter_transactions():
     return render_template('filter.html', form=form, transactions=transactions)
 
 
+@app.route('/transaction/<int:transaction_id>')
+def view_transaction(transaction_id):
+    transaction = Transaction.query.get(transaction_id)
+    return render_template('transaction.html', transaction=transaction)
+
+
 with app.app_context():
     db.create_all()
     app.run()
