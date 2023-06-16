@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ececec;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    h1:hover {
+      color: #379e1f;
+      transition: 0.2s;
+    }
+
+    p {
+      color: #666;
+      text-align: center;
+    }
+    body {
+      background-color: #33837e;
+    }
+  </style>
+  <head>
+    <title>About</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 onclick="location.href='/'" class="title">
+        {% block title %} AghmartBank {% endblock %}
+      </h1>
+      <p>ფინანსური მენეჯმენტის აპლიკაცია</p>
+      <p>
+        Aghmart Bank-ი დაგეხმარებათ თვალყური ადევნოთ თქვენს ყოველ ახალ
+        ტრანზაქციას, რაც მოგცემთ საშუალებას მიიღოთ უკეთესი ფინანსური
+        გადაწყვეტილებები და მოუფრთხილდეთ თქვენს ფინანსებს.
+      </p>
+      <p>ჯგუფის წევრები</p>
+      <ul>
+        <li>Davit Gaurgashvili</li>
+        <li>Tekla Gurchiani</li>
+        <li>Milena Oganiani</li>
+        <li>Nikoloz Svanidze</li>
+        <li>Luka Yurashvili</li>
+      </ul>
+    </div>
+  </body>
+</html>

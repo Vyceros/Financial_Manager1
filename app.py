@@ -170,6 +170,10 @@ def delete_transactions(transaction_id):
     else:
         return jsonify({'message': 'Transaction not found'}), 404
 
+@app.route('/about')
+def about():
+    form = Form()
+    return render_template('about.html', form=form)
 
 with app.app_context():
     db.create_all()
