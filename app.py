@@ -210,6 +210,14 @@ def update_transaction(transaction_id):
         return jsonify({'message': 'Transaction not found'}), 404
 
 
+
+
+
+@app.route('/about')
+def about():
+    form = Form()
+    return render_template('about.html', form=form)
+
 @app.route('/api/transactions/<int:transaction_id>', methods=['DELETE'])
 def delete_transactions(transaction_id):
     transaction = Transaction.query.get(transaction_id)
@@ -219,14 +227,6 @@ def delete_transactions(transaction_id):
         return jsonify({'message': 'Transaction deleted'})
     else:
         return jsonify({'message': 'Transaction not found'}), 404
-
-
-@app.route('/about')
-def about():
-    form = Form()
-    return render_template('about.html', form=form)
-
-
 
 with app.app_context():
     db.create_all()
