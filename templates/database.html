@@ -106,10 +106,63 @@
         color: #379e1f;
         transition: 0.2s;
     }
+    /* CSS for Filter Form */
+.filter-form {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.filter-form label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.filter-form select,
+.filter-form input[type="text"] {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.filter-form select {
+  width: 120px;
+}
+
+.filter-form input[type="text"] {
+  width: 200px;
+}
+
+.filter-form button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.filter-form button:hover {
+  background-color: #0056b3;
+}
+
 </style>
 
 </head>
 <body>
+<div class="filter-form">
+    <form action="{{ url_for('show_transactions') }}" method="POST">
+  <label for="trans_type">Transaction Type:</label>
+  <select name="trans_type" id="trans_type">
+    <option value="">All</option>
+    <option value="Income">Income</option>
+    <option value="Outcome">Outcome</option>
+  </select>
+  <label for="trans_cat">Transaction Category:</label>
+  <input type="text" name="trans_cat" id="trans_cat">
+  <button type="submit">Filter</button>
+</form>
+</div>
+
 {% block content %}
     <div class="title">
         <h2>Current Balance: {{ balance }}ლ</h2>

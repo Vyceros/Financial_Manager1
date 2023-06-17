@@ -83,7 +83,27 @@ def insert_transaction():
 
 @app.route('/transactions', methods=['POST', 'GET'])
 def show_transactions():
-    transactions = [trans.to_dict() for trans in Transaction.query.all()]
+    if request.method == 'POST':
+        trans_type = request.form.get('trans_type')
+        trans_cat = request.form.get('trans_cat')
+
+        if trans_type and trans_cat:
+            transactions = [
+                trans.to_dict() for trans in Transaction.query.filter_by(trans_type=trans_type, trans_cat=trans_cat)
+            ]
+        elif trans_type:
+            transactions = [
+                trans.to_dict() for trans in Transaction.query.filter_by(trans_type=trans_type)
+            ]
+        elif trans_cat:
+            transactions = [
+                trans.to_dict() for trans in Transaction.query.filter_by(trans_cat=trans_cat)
+            ]
+        else:
+            transactions = [trans.to_dict() for trans in Transaction.query.all()]
+    else:
+        transactions = [trans.to_dict() for trans in Transaction.query.all()]
+
     transactions_for_balance = Transaction.query.all()
     balance = 0.0
 
