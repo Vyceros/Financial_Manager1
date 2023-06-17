@@ -14,6 +14,10 @@
         color: #33837e;
     }
 
+    .title h1 {
+        font-size: 50px;
+    }
+
     .content {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -106,9 +110,12 @@
 
 </head>
 <body>
-
 {% block content %}
-    <h1 onclick="location.href='/'" class="title">{% block title %} AghmartBank {% endblock %}</h1>
+    <div class="title">
+        <h2>Current Balance: {{ balance }}ლ</h2>
+        <h1 onclick="location.href='/'" class="title">{% block title %} AghmartBank {% endblock %}</h1>
+
+    </div>
     <div class="content">
         {% for transaction in transactions %}
     <div class="transaction">

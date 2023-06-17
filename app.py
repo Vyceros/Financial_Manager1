@@ -29,6 +29,17 @@ class Transaction(db.Model):
         }
 
 
+class Balance(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    total_value = db.Column(db.Float, nullable=False, default=0.0)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "total_value": self.total_value,
+        }
+
+
 class TransactionSchema(ma.Schema):
     class Meta:
         fields = ('id', 'value', 'trans_type', 'trans_cat')
@@ -37,6 +48,7 @@ class TransactionSchema(ma.Schema):
 transaction_schema = TransactionSchema()
 transactions_schema = TransactionSchema(many=True)
 app.debug = True
+balance = 0.0
 
 
 class Form(FlaskForm):
@@ -72,7 +84,22 @@ def insert_transaction():
 @app.route('/transactions', methods=['POST', 'GET'])
 def show_transactions():
     transactions = [trans.to_dict() for trans in Transaction.query.all()]
-    return render_template('database.html', transactions=transactions)
+    transactions_for_balance = Transaction.query.all()
+    balance = 0.0
+
+    for transaction in transactions_for_balance:
+        try:
+            value = float(transaction.value)
+        except ValueError:
+            # Handle cases where value is not a valid float
+            continue
+
+        if transaction.trans_type == 'Income':
+            balance += value
+        elif transaction.trans_type == 'Outcome':
+            balance -= value
+
+    return render_template('database.html', balance=balance, transactions=transactions)
 
 
 @app.route('/edit/<int:transaction_id>', methods=['GET', 'POST'])
@@ -170,10 +197,32 @@ def delete_transactions(transaction_id):
     else:
         return jsonify({'message': 'Transaction not found'}), 404
 
+
 @app.route('/about')
 def about():
     form = Form()
     return render_template('about.html', form=form)
+
+
+# @app.route('/balance', methods=['GET'])
+# def balance():
+#     transactions = Transaction.query.all()
+#     balance = 0.0
+#
+#     for transaction in transactions:
+#         try:
+#             value = float(transaction.value)
+#         except ValueError:
+#             # Handle cases where value is not a valid float
+#             continue
+#
+#         if transaction.trans_type == 'Income':
+#             balance += value
+#         elif transaction.trans_type == 'Outcome':
+#             balance -= value
+#
+#     return render_template('database.html', balance=balance)
+
 
 with app.app_context():
     db.create_all()
