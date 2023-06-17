@@ -226,25 +226,6 @@ def about():
     return render_template('about.html', form=form)
 
 
-# @app.route('/balance', methods=['GET'])
-# def balance():
-#     transactions = Transaction.query.all()
-#     balance = 0.0
-#
-#     for transaction in transactions:
-#         try:
-#             value = float(transaction.value)
-#         except ValueError:
-#             # Handle cases where value is not a valid float
-#             continue
-#
-#         if transaction.trans_type == 'Income':
-#             balance += value
-#         elif transaction.trans_type == 'Outcome':
-#             balance -= value
-#
-#     return render_template('database.html', balance=balance)
-
 
 with app.app_context():
     db.create_all()
