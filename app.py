@@ -13,6 +13,8 @@ app.config["SECRET_KEY"] = 'supersecretkey'
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
+#tranzaqciebi
+
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
